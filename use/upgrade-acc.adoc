@@ -487,6 +487,18 @@ spec:
   accountName: "Example"
   *astraVersion: "[Version number]"*
 ----
+. Modificare il numero di versione di Astra (`astraVersion` all'interno di `spec`) da `23.07.0` a. `23.10.0`:
++
+
+NOTE: Non è possibile eseguire l'aggiornamento direttamente da una versione che è costituita da due o più versioni precedenti alla release corrente. Per un elenco completo delle versioni rilasciate, vedere link:../release-notes/whats-new.html["note di rilascio"].
+
++
+[listing, subs="+quotes"]
+----
+spec:
+  accountName: "Example"
+  *astraVersion: "[Version number]"*
+----
 . Verificare che il percorso del Registro di sistema dell'immagine corrisponda al percorso del Registro di sistema in cui sono state inviate le immagini in <<Aggiungere le immagini al registro locale,passaggio precedente>>. Aggiornare `imageRegistry` all'interno di `spec` se il registro di sistema è stato modificato dall'ultima installazione.
 +
 [listing]
