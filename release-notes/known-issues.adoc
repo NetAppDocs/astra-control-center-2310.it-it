@@ -1,0 +1,125 @@
+---
+sidebar: sidebar 
+permalink: release-notes/known-issues.html 
+keywords: astra, control center, bugs, known issues, problems 
+summary: 'I problemi noti identificano i problemi che potrebbero impedire l"utilizzo corretto di questa versione del prodotto.' 
+---
+= Problemi noti
+:hardbreaks:
+:allow-uri-read: 
+:source-highlighter: highlight.js
+:icons: font
+:imagesdir: ../media/release-notes/
+
+
+[role="lead"]
+I problemi noti identificano i problemi che potrebbero impedire l'utilizzo corretto di questa versione del prodotto.
+
+I seguenti problemi noti riguardano la versione corrente:
+
+* <<I backup e le snapshot delle applicazioni non vengono eseguiti se la classe volumesnapshotclass viene aggiunta dopo la gestione di un cluster>>
+* <<La gestione di un cluster con Astra Control Center non riesce quando il file kubeconfig contiene più di un contesto>>
+* <<Un pod di monitoraggio può bloccarsi negli ambienti Istio>>
+* <<Le operazioni di gestione dei dati dell'app non riescono e si verificano errori di servizio interni (500) quando Astra Trident è offline>>
+* <<Le operazioni di ripristino in-place alle classi di storage economiche ontap-nas falliscono>>
+* <<Il ripristino da un backup quando si utilizza la crittografia in-flight Kerberos può non riuscire>>
+* <<I dati di backup rimangono nel bucket dopo l'eliminazione per bucket con criteri di conservazione scaduti>>
+
+
+
+
+== I backup e le snapshot delle applicazioni non vengono eseguiti se la classe volumesnapshotclass viene aggiunta dopo la gestione di un cluster
+
+Backup e snapshot non vengono eseguiti con un `UI 500 error` in questo scenario. Come soluzione, aggiornare l'elenco delle applicazioni.
+
+
+
+== La gestione di un cluster con Astra Control Center non riesce quando il file kubeconfig contiene più di un contesto
+
+Non è possibile utilizzare un kubeconfig con più di un cluster e un contesto. Vedere link:https://kb.netapp.com/Cloud/Astra/Control/Managing_cluster_with_Astra_Control_Center_may_fail_when_using_default_kubeconfig_file_contains_more_than_one_context["articolo della knowledge base"^] per ulteriori informazioni.
+
+
+
+== Un pod di monitoraggio può bloccarsi negli ambienti Istio
+
+Se si associa il centro di controllo Astra a Cloud Insights in un ambiente Istio, il `telegraf-rs` pod può bloccarsi. Per risolvere il problema, attenersi alla seguente procedura:
+
+. Individuare il pod bloccato:
++
+[listing]
+----
+kubectl -n netapp-monitoring get pod | grep Error
+----
++
+L'output dovrebbe essere simile a quanto segue:
+
++
+[listing]
+----
+NAME READY STATUS RESTARTS AGE
+telegraf-rs-fhhrh 1/2 Error 2 (26s ago) 32s
+----
+. Riavviare il pod bloccato, sostituendo `<pod_name_from_output>` con il nome del pod interessato:
++
+[listing]
+----
+kubectl -n netapp-monitoring delete pod <pod_name_from_output>
+----
++
+L'output dovrebbe essere simile a quanto segue:
+
++
+[listing]
+----
+pod "telegraf-rs-fhhrh" deleted
+----
+. Verificare che il pod sia stato riavviato e che non si trovi in uno stato di errore:
++
+[listing]
+----
+kubectl -n netapp-monitoring get pod
+----
++
+L'output dovrebbe essere simile a quanto segue:
+
++
+[listing]
+----
+NAME READY STATUS RESTARTS AGE
+telegraf-rs-rrnsb 2/2 Running 0 11s
+----
+
+
+
+
+== Le operazioni di gestione dei dati dell'app non riescono e si verificano errori di servizio interni (500) quando Astra Trident è offline
+
+Se Astra Trident su un cluster di applicazioni diventa offline (e viene riportato online) e si verificano 500 errori di servizio interni durante il tentativo di gestione dei dati dell'applicazione, riavviare tutti i nodi Kubernetes nel cluster di applicazioni per ripristinare la funzionalità.
+
+
+
+== Le operazioni di ripristino in-place alle classi di storage economiche ontap-nas falliscono
+
+Se si esegue un ripristino sul posto di un'applicazione (ripristinando l'applicazione nello spazio dei nomi originale) e la classe di archiviazione dell'applicazione utilizza `ontap-nas-economy` driver, l'operazione di ripristino può non riuscire se la directory dello snapshot non è nascosta. Prima di eseguire il ripristino sul posto, seguire le istruzioni riportate in link:../use/protect-apps.html#enable-backup-and-restore-for-ontap-nas-economy-operations["Abilita backup e ripristino per le operazioni economiche a ontap-nas"^] per nascondere la directory dell'istantanea.
+
+
+
+== Il ripristino da un backup quando si utilizza la crittografia in-flight Kerberos può non riuscire
+
+Quando si ripristina un'applicazione da un backup a un backend di storage che utilizza la crittografia in-flight Kerberos, l'operazione di ripristino potrebbe non riuscire. Questo problema non influisce sul ripristino da uno snapshot o sulla replica dei dati dell'applicazione tramite SnapMirror di NetApp.
+
+
+NOTE: Quando si utilizza la crittografia in-flight Kerberos con volumi NFSv4, assicurarsi che i volumi NFSv4 stiano utilizzando le impostazioni corrette. Consultare la sezione Configurazione di dominio NetApp NFSv4 (pagina 13) della https://www.netapp.com/media/16398-tr-3580.pdf["Guida ai miglioramenti e alle Best practice di NetApp NFSv4"^].
+
+
+
+== I dati di backup rimangono nel bucket dopo l'eliminazione per bucket con criteri di conservazione scaduti
+
+Se elimini il backup immutabile di un'app dopo che il criterio di conservazione del bucket è scaduto, il backup viene eliminato da Astra Control ma non dal bucket. Questo problema verrà risolto in una prossima release.
+
+
+
+== Trova ulteriori informazioni
+
+* link:../release-notes/known-limitations.html["Limitazioni note"]
+
