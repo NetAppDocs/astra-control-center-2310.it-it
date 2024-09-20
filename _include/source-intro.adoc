@@ -139,7 +139,7 @@ Il centro di controllo Astra supporta i cluster Kubernetes con classe di storage
 
 In un ambiente connesso al cloud, Astra Control Center utilizza Cloud Insights per fornire monitoraggio e telemetria avanzati. In assenza di una connessione Cloud Insights, il monitoraggio e la telemetria sono disponibili in un centro di controllo Astra per un periodo di 7 giorni ed esportati anche in strumenti di monitoraggio nativi Kubernetes (come Prometheus e Grafana) attraverso endpoint di metriche aperte.
 
-Il centro di controllo Astra è completamente integrato nell'ecosistema AutoSupport e Active IQ per fornire agli utenti e al supporto NetApp informazioni sulla risoluzione dei problemi e sull'utilizzo.
+Astra Control Center è completamente integrato nell'ecosistema di consulente digitale di AutoSupport e Active IQ (detto anche Digital Advisor) per fornire agli utenti e al supporto NetApp informazioni su risoluzione dei problemi e utilizzo.
 
 Puoi provare Astra Control Center utilizzando una licenza di valutazione integrata della durata di 90 giorni. Mentre stai valutando Astra Control Center, puoi ottenere supporto tramite e-mail e opzioni della community. Inoltre, puoi accedere agli articoli e alla documentazione della Knowledge base dalla dashboard di supporto all'interno del prodotto.
 
